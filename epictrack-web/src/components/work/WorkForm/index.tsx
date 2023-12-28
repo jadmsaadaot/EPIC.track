@@ -354,7 +354,7 @@ export default function WorkForm({ ...props }) {
             //TODO: Uncomment this once the the PR that adds it is merged
             // ctx.getById(workId);
           }}
-          options={leads || []}
+          options={epds || []}
         >
           <ControlledSelectV2
             disabled={work?.responsible_epd_id != undefined}

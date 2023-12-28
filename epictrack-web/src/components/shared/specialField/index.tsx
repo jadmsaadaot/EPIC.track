@@ -36,14 +36,6 @@ const SPECIAL_FIELD_KEYS: { [x: string]: SPECIAL_FIELD_KEY } = {
   ACTIVE_FROM: "active_from",
 };
 
-type ErrorState = {
-  [key in SPECIAL_FIELD_KEY]: boolean;
-};
-
-type Errors = {
-  [key: string]: ErrorState | undefined;
-};
-
 export const SpecialFieldGrid = ({
   entity,
   entity_id,
@@ -132,13 +124,14 @@ export const SpecialFieldGrid = ({
             <>
               <When condition={fieldType === "select"}>
                 <TrackSelect
-                  options={options || []}
-                  getOptionLabel={(option) => option.label}
-                  getOptionValue={(option) => option.value}
+                  options={options ?? []}
+                  getOptionLabel={(option) => option?.label}
+                  getOptionValue={(option) => option?.value}
                   isMulti={false}
-                  value={value}
+                  value={undefined}
                   onChange={onBlur}
                   error={errors.field_value}
+                  isClearable={false}
                 />
               </When>
               <When condition={fieldType === "text"}>
@@ -225,7 +218,6 @@ export const SpecialFieldGrid = ({
   const handleCreateRowSave: MRT_TableOptions<SpecialField>["onCreatingRowSave"] =
     async ({ values, table, row }) => {
       const isValid = validateRowInputs(values, row);
-      console.log("isValid", isValid);
       if (!isValid) {
         return;
       }

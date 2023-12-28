@@ -14,6 +14,7 @@ type SelectProps = {
   onChange: (val: any) => void;
   error?: boolean;
   helperText?: string;
+  isClearable?: boolean;
 };
 
 const TrackSelect: React.FC<SelectProps> = ({
@@ -26,6 +27,7 @@ const TrackSelect: React.FC<SelectProps> = ({
   onChange,
   error = false,
   helperText = "",
+  isClearable = true,
   ...rest
 }) => {
   return (
@@ -37,15 +39,18 @@ const TrackSelect: React.FC<SelectProps> = ({
         getOptionLabel={getOptionLabel}
         isSearchable={true}
         isDisabled={!!disabled}
-        isClearable={true}
-        value={options.filter((c) => {
-          if (isMulti && value) {
-            return (value as any[])
-              .map((p) => p.toString())
-              .includes(getOptionValue(c));
-          }
-          return getOptionValue(c) === value?.toString();
-        })}
+        isClearable={isClearable}
+        value={
+          value &&
+          options.filter((c) => {
+            if (isMulti) {
+              return (value as any[])
+                .map((p) => p.toString())
+                .includes(getOptionValue(c));
+            }
+            return getOptionValue(c) === value?.toString();
+          })
+        }
         isMulti={isMulti}
         onChange={(val: any) => {
           let v;
